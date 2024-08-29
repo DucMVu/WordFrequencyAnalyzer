@@ -53,7 +53,7 @@ class DemoApplicationTests {
 						.param("text","Coding is hard. Testing is also hard. Hard work pays off.")
 						.param("word", "Hard"))
 				.andExpect(status().isOk())
-				.andExpect(content().string("0"));
+				.andExpect(content().string("3"));
 	}
 
 	@Test
@@ -73,6 +73,23 @@ class DemoApplicationTests {
 						.param("text","This is a test Test text. Test is hard. Test is fun.")
 						.param("limit", "2"))
 				.andExpect(status().isOk())
-				.andExpect(content().string("[{\"test\":4},{\"is\":3}]"));
+				.andExpect(content().string(
+						"[{\"word\":\"test\",\"frequency\":4}," +
+								"{\"word\":\"is\",\"frequency\":3}]"
+		));
+	}
+
+	@Test
+	void mostFrequentWords_limitAscendantOrder() throws Exception {
+		mockMvc.perform(get("/api/mostFrequentWords")
+						.contentType(MediaType.APPLICATION_JSON)
+						.param("text","The sun shines over the lake.")
+						.param("limit", "3"))
+				.andExpect(status().isOk())
+				.andExpect(content().string(
+						"[{\"word\":\"the\",\"frequency\":2}," +
+								"{\"word\":\"lake\",\"frequency\":1}," +
+								"{\"word\":\"over\",\"frequency\":1}]"
+				));
 	}
 }
