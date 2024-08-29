@@ -11,10 +11,10 @@ import java.util.Map;
 @RequestMapping("/api")
 public class WordFrequencyAnalyzerController {
 
-//    @GetMapping("/test")
-//    public String hello() {
-//        return "hello world";
-//    }
+    @GetMapping("/test")
+    public String test() {
+        return "backend started";
+    }
 
     @GetMapping("/highestFrequency")
     public int getCalculateHighestFrequency(@RequestParam("text") String text) {
@@ -59,7 +59,7 @@ public class WordFrequencyAnalyzerController {
     };
 
     @GetMapping("/mostFrequentWords")
-    public List<String> calculateMostFrequentNWords(@RequestParam("text") String text, @RequestParam("limit") int limit) {
+    public List<Map<String, Integer>> calculateMostFrequentNWords(@RequestParam("text") String text, @RequestParam("limit") int limit) {
         String[] words = processWords(text);
 
         Map<String, Integer> map = new HashMap<>();
@@ -69,35 +69,36 @@ public class WordFrequencyAnalyzerController {
             map.put(s, count);
         }
 
-        List<String> wordsList = getFrequentNWords(map, limit);
+        List<Map<String, Integer>> wordsList = getFrequentNWords(map, limit);
 
         return wordsList;
     }
 
-    private List<String> getFrequentNWords(Map<String, Integer> wordCountMap, int limit) {
+    private List<Map<String, Integer>> getFrequentNWords(Map<String, Integer> wordFrequencyMap, int limit) {
         int maxFrequency = 0;
-        for (Integer value : wordCountMap.values()) {
+        for (Integer value : wordFrequencyMap.values()) {
             if (value > maxFrequency)
                 maxFrequency = value;
         }
 
-        List<String>[] wordList = new List[maxFrequency];
-        for (Map.Entry<String, Integer> entry : wordCountMap.entrySet()) {
+        List<Map<String, Integer>>[] wordList = new List[maxFrequency];
+        for (Map.Entry<String, Integer> entry : wordFrequencyMap.entrySet()) {
             int index = entry.getValue() - 1;
 
             if (wordList[index] == null) {
                 wordList[index] = new LinkedList<>();
             }
-
-            wordList[index].add(entry.getKey());
+            HashMap<String, Integer> entryMap = new HashMap<>();
+            entryMap.put(entry.getKey(), entry.getValue());
+            wordList[index].add(entryMap);
         }
 
-        List<String> words = new LinkedList<>();
+        List<Map<String, Integer>> words = new LinkedList<>();
 
         for (int i = wordList.length - 1; i >= 0 && limit > 0; i--) {
             if (wordList[i] != null) {
-                for (String s : wordList[i]) {
-                    words.add(s);
+                for (Map<String, Integer> map : wordList[i]) {
+                    words.add(map);
                     limit--;
                 }
             }
