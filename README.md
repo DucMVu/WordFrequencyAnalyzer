@@ -4,7 +4,7 @@ Simple project to count word frequency in a sentence. Symbols and case sensitivi
 
 ## Getting Started
 
-This project is built with Sring Boot.
+This project is built with Spring Boot.
 
 ### Dependencies and plugins
 
@@ -25,18 +25,20 @@ git clone https://github.com/DucMVu/WordFrequencyAnalyzer
 * Available API endpoints are listed below:
 ```
 /api/highestFrequency to check the highest frequency of words in a sentence. Input param is sentence.
-For example, "This is a test Test text." returns "2"
+For example: "This is a test Test text." returns "2"
 ```
 
 ```
 /api/wordFrequency to check the frequency of a given word in a sentence. Input params are sentence and word.
-For example, frequency of "test" in "This is a test Test text." sentence is "2".
+For example: frequency of "test" in "This is a test Test text." sentence is "2".
 Frequency of "text" is "1".
 Frequency of "notfound" is "0".
 ```
 
 ```
-/api/mostFrequentWords to check the frequencies of a number of most repeated words in a sentence. Input params are sentence and number.
-For example, frequencies of two most repeated words in "This is a test Test text. Test is hard. Test is fun" is "[{"test":4},{"is":3}]".
-Frequency of most repeated word is "[{"test":4}]".
+/api/mostFrequentWords to check the frequencies of a number of most repeated words in a sentence. Input params are
+sentence and number. If several words have the same frequency, this method should return them in ascendant alphabetical
+order.
+For example: frequencies of 3 most repeated words in "The sun shines over the lake" is 
+"[{"word":"the","frequency":2},{"word":"lake","frequency":1},{"word":"over","frequency":1}]".
 ```
